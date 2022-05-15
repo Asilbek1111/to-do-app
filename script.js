@@ -1,75 +1,54 @@
-let text = document.querySelector(".text");
-let btn = document.querySelector(".btn");
-let myList = document.querySelector("#myList");
+"use strict";
+
+var text = document.querySelector(".text");
+var btn = document.querySelector(".btn");
+var taskContainer = document.querySelector(".tasks-container");
 
 btn.addEventListener("click", function () {
-  if (text.value.length > 1) {
-    //big box
+  var txtValue = text.value;
 
-    var bBox = document.createElement("div");
-    myList.appendChild(bBox);
+  var task = document.createElement("div");
+  task.classList.add("task");
 
-    // LI ITEM
-    var newItem = document.createElement("li");
-    newItem.style.display = "flex";
-    newItem.style.alignItems = "center";
-    newItem.style.display = "flex";
-    newItem.style.justifyContent = "space-between";
-    myList.appendChild(newItem);
+  var parag = document.createElement("input");
+  parag.type = "text";
+  parag.value = txtValue;
+  parag.setAttribute("readonly", "readonly");
+  parag.classList.add("parag");
+  task.appendChild(parag);
 
-    //PARAGRAPH BOX
-    var pBox = document.createElement("div");
-    pBox.style.display = "inline-block";
-    pBox.style.display = "flex";
-    pBox.style.alignItems = "center";
-    bBox.appendChild(pBox);
+  var editBox = document.createElement("div");
+  editBox.classList.add("boxList");
 
-    // PARAGRAPH
-    var parag = document.createElement("p");
-    parag.textContent = text.value;
-    pBox.appendChild(parag);
+  var edit = document.createElement("button");
+  edit.textContent = "edit";
+  edit.classList.add("edit");
 
-    //BOX OF BUTTONS
-    var box = document.createElement("div");
-    bBox.appendChild(box);
-    box.style.display = "inline-block";
-    box.style.display = "flex";
-    box.style.alignItems = "center";
+  var deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "delete";
+  deleteBtn.classList.add("delete");
+  deleteBtn.value = "delete";
 
-    //UPDATE BUTTON
-    var update = document.createElement("button");
-    update.textContent = "Update";
-    update.style.marginRight = "10px";
-    box.appendChild(update);
+  taskContainer.appendChild(task);
 
-    //CANCEL BUTTON
-    var newBtn = document.createElement("button");
-    newBtn.textContent = "X";
-    newBtn.style.padding = "8px 10px";
-    newBtn.style.backgroundColor = "dodgerblue";
-    newBtn.style.border = "none";
-    newBtn.style.borderRadius = "50%";
-    newBtn.style.color = "#fff";
-    newBtn.style.cursor = "pointer";
-    box.appendChild(newBtn);
-  }
+  editBox.appendChild(edit);
+  editBox.appendChild(deleteBtn);
+  task.appendChild(editBox);
 
-  //CANCEL ONCLICK
-  newBtn.onclick = () => {
-    parag.classList.toggle("check");
-  };
+  edit.addEventListener("click", function () {
+    if (edit.innerText.toLowerCase() == "edit") {
+      edit.innerText = "Save";
+      parag.classList.add("paragPress");
+      parag.removeAttribute("readonly");
+      parag.focus();
+    } else {
+      edit.innerText = "Edit";
+      parag.classList.remove("paragPress");
+      parag.setAttribute("readonly", "readonly");
+    }
+  });
 
-  update.addEventListener("click", function () {
-    parag.style.display = "none";
-    var inp = document.createElement("input");
-    pBox.appendChild(inp);
-    update.innerHTML = "Save";
-
-    update.addEventListener("click", function () {
-      inp.style.display = "none";
-      var newText = inp.value;
-      parag.style.display = "block";
-      parag.textContent = newText;
-    });
+  deleteBtn.addEventListener("click", () => {
+    taskContainer.removeChild(task);
   });
 });
